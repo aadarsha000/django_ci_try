@@ -26,6 +26,9 @@ jobs:
         run: |
           python manage.py migrate
 
+      - name: Lint with flake8
+        run: |
+          flake8 
       - name: Django testing
         run: |
           python manage.py test
