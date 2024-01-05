@@ -1,8 +1,7 @@
-name: Test CI Django
+name: Test CI Django 2
 
 on:
-  push:
-    branches: [main]
+
   pull_request:
     branches: [main]
 
@@ -34,3 +33,21 @@ jobs:
       - name: Django testing
         run: |
           python manage.py test
+
+  check_workflow_status:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check workflow status
+        id: check_status
+        run: echo "Workflow status is ${{ job.status }}"
+
+  merge_on_success:
+    needs: check_workflow_status
+    runs-on: ubuntu-latest
+    if: ${{ needs.build.result == 'success' }}
+
+    steps:
+      - name: Merge pull request
+        run: echo "Merge pull request"  
